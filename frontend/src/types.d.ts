@@ -4,3 +4,8 @@ export interface IMessage {
   date: string;
   id: string;
 }
+
+export interface IMessageMutation {
+  message: string;
+  author: string;
+}

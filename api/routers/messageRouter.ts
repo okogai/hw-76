@@ -26,12 +26,12 @@ messagesRouter.post("/", async (req, res) => {
 
     if (!message || !author) {
         res.status(400).send({"error": "Author and message must be present in request"});
+    } else {
+        const messageWithoutID = {message, author};
+        const messageFromDb = await fileDb.addItem(messageWithoutID);
+
+        res.send(messageFromDb);
     }
-
-    const messageWithoutID = {message, author};
-    const messageFromDb = await fileDb.addItem(messageWithoutID);
-
-    res.send(messageFromDb);
 });
 
 export default messagesRouter;

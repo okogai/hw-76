@@ -15,7 +15,7 @@ const MessageList = () => {
   return (
     <div>
       {messages.map((message) => (
-        <Message key={message.id} author={message.author} message={message.message} date={message.date} />
+        <Message key={message.id} message={message} />
       ))}
     </div>
   );
