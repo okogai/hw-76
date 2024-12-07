@@ -1,5 +1,6 @@
-export interface IMessages {
+export interface IMessage {
   message: string;
   author: string;
-  datetime: string;
+  date: string;
+  id: string;
 }

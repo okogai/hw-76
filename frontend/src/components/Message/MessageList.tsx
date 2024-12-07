@@ -1,22 +1,24 @@
-import React from "react";
 import Message from "./Message";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {messagesSelector} from "../../store/slices/messagesSlice.ts";
+import {useEffect} from "react";
+import {messagesFetch} from "../../store/thunks/messagesThunks.ts";
 
-interface MessageListProps {
-  messages: {
-    message: string;
-    author: string;
-    datetime: string;
-  }[];
-}
+const MessageList = () => {
+  const messages = useAppSelector(messagesSelector);
+  const dispatch = useAppDispatch();
 
-const MessageList: React.FC<MessageListProps> = React.memo(({ messages }) => {
+  useEffect(() => {
+    dispatch(messagesFetch());
+  },[dispatch]);
+
   return (
     <div>
-      {messages.map((msg) => (
-        <Message key={msg.datetime} {...msg} />
+      {messages.map((message) => (
+        <Message key={message.id} author={message.author} message={message.message} date={message.date} />
       ))}
     </div>
   );
-});
+};
 
 export default MessageList;

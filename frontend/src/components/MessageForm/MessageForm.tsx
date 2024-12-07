@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 
-interface MessageFormProps {
-  onSend: () => void;
-}
-
-const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
+const MessageForm = () => {
   const [message, setMessage] = useState("");
   const [author, setAuthor] = useState("");
 
@@ -23,7 +19,6 @@ const MessageForm: React.FC<MessageFormProps> = ({ onSend }) => {
     });
 
     setMessage("");
-    onSend();
   };
 
   return (

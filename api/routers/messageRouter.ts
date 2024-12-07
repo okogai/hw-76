@@ -8,17 +8,17 @@ messagesRouter.get("/", async (req, res) => {
     const queryDate = req.query.datetime as string;
 
     if (!queryDate) {
-        res.send(messages.slice(-30));
+        res.send(messages.slice(-30).reverse());
+    } else {
+        const date = new Date(queryDate);
+
+        if (isNaN(date.getDate())) {
+            res.status(400).send({"error": "Invalid Date"});
+        }
+
+        const filteredMessagesByDate = messages.filter(message => new Date(message.date).getTime() > date.getTime());
+        res.send(filteredMessagesByDate.reverse());
     }
-
-    const date = new Date(queryDate);
-
-    if (isNaN(date.getDate())) {
-        res.status(400).send({"error": "Invalid Date"});
-    }
-
-    const filteredMessagesByDate = messages.filter(message => new Date(message.date).getTime() > date.getTime());
-    res.send(filteredMessagesByDate);
 });
 
 messagesRouter.post("/", async (req, res) => {
