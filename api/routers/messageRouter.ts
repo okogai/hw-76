@@ -8,7 +8,7 @@ messagesRouter.get("/", async (req, res) => {
     const queryDate = req.query.datetime as string;
 
     if (!queryDate) {
-        res.send(messages.slice(-30).reverse());
+        res.send(messages.slice(-30));
     } else {
         const date = new Date(queryDate);
 
@@ -17,7 +17,7 @@ messagesRouter.get("/", async (req, res) => {
         }
 
         const filteredMessagesByDate = messages.filter(message => new Date(message.date).getTime() > date.getTime());
-        res.send(filteredMessagesByDate.reverse());
+        res.send(filteredMessagesByDate);
     }
 });
 

@@ -1,5 +1,6 @@
 import {IMessage, PostMessage} from "./types";
 import {promises as fs} from 'fs';
+import dayjs from "dayjs";
 
 const fileName = './Db.json';
 
@@ -15,8 +16,39 @@ const fileDb = {
         }
     },
     async getItems() {
-        return data;
-    },
+        const today = dayjs();
+        const yesterday = dayjs().subtract(1, "day");
+
+        return data.map((item) => {
+            const itemDate = dayjs(item.date);
+
+            if (itemDate.isSame(today, "day")) {
+                return {
+                    ...item,
+                    date: `Сегодня ${itemDate.format("HH:mm")}`,
+                };
+            }
+
+            if (itemDate.isSame(yesterday, "day")) {
+                return {
+                    ...item,
+                    date: `Вчера ${itemDate.format("HH:mm")}`,
+                };
+            }
+
+            if (itemDate.isSame(today, "year")) {
+                return {
+                    ...item,
+                    date: itemDate.format("DD.MM HH:mm"),
+                };
+            }
+
+            return {
+                ...item,
+                date: itemDate.format("DD.MM.YYYY HH:mm"),
+            };
+        });
+        },
     async addItem(messageWithoutID: PostMessage) {
         const id = crypto.randomUUID();
         const date = new Date().toISOString();

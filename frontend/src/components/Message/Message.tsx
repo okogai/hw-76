@@ -1,4 +1,4 @@
-import { Card, CardContent, Divider, Typography } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { IMessage } from '../../types';
 
@@ -8,16 +8,14 @@ interface Props {
 
 const Message: React.FC<Props> = ({ message }) => {
   return (
-    <Card style={{ marginBottom: "10px", padding: "1rem" }}>
+    <Card style={{ marginBottom: "10px" }}>
       <CardContent>
         <Typography variant="caption" marginRight="10px" color="textDisabled">Posted on:
         </Typography>
-        <Typography variant="caption">
-          {new Date(message.date).toLocaleString()}
+        <Typography variant="caption">{message.date}</Typography>
+        <Typography variant="body1">
+          <span><strong style={{ color: '#1565c0' }}>{message.author}:</strong> {message.message}</span>
         </Typography>
-        <Typography variant="h6" color="info">{message.author}</Typography>
-        <Divider sx={{marginY: "10px"}} />
-        <Typography variant="body1">{message.message}</Typography>
       </CardContent>
     </Card>
   );

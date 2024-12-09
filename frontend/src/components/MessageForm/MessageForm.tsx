@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { messagesFetch, sendMessage } from '../../store/thunks/messagesThunks.ts';
 import { IMessageMutation } from '../../types';
+import { sendMessageLoadingSelector } from '../../store/slices/messagesSlice.ts';
 
 const initialState = {
   author: '',
@@ -11,6 +12,7 @@ const initialState = {
 
 const MessageForm = () => {
   const [form, setForm] = useState<IMessageMutation>(initialState);
+  const loading = useAppSelector(sendMessageLoadingSelector);
   const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +38,8 @@ const MessageForm = () => {
          sx={{display: 'flex',
            flexDirection: 'column',
            alignItems: 'center',
-           padding: '2rem',
+           paddingY: '1rem',
+           paddingX: '2rem',
            marginBottom: '2rem',
            boxShadow: '0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);'
          }}>
@@ -46,6 +49,7 @@ const MessageForm = () => {
         name="author"
         variant="outlined"
         fullWidth
+        size="small"
         margin="normal"
         value={form.author}
         onChange={handleChange}
@@ -56,13 +60,16 @@ const MessageForm = () => {
         name="message"
         variant="outlined"
         fullWidth
+        size="small"
         margin="normal"
         value={form.message}
         onChange={handleChange}
         required
       />
-      <Button type="submit" variant="contained" color="primary" sx={{marginTop: "15px", width: "90px"}}>
-        Send
+      <Button type="submit" variant="contained" color="primary" sx={{marginTop: "15px", width: "90px"}} disabled={loading}>
+        {loading
+          ? <CircularProgress size="24px"/>
+          : 'Send'}
       </Button>
     </Box>
 
